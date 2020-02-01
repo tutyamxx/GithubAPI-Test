@@ -43,4 +43,19 @@ body
     font-weight: bold;
     font-size: large;
 }
+
+::selection
+{
+    background: #52CEA2; /* WebKit/Blink Browsers */
+}
+
+::-moz-selection
+{
+    background: #52CEA2; /* Gecko Browsers */
+}
+
+a
+{
+    color: #41B883;
+};
 </style>

@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <a href="https://github.com/tutyamxx/MableTherapyTest/fork"><img width="149" height="149" id="forkme" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
         <!-- Search box using vue | also autoselects the text on focus -->
         <div>
             <input type="text" v-model="search_query" class="search" placeholder="Search user" @focus="$event.target.select();"><button id="search-user" @click="clicked_search">Search</button>
@@ -151,10 +152,10 @@ export default
     width: 100%;
     height: 100%;
     max-width: 100%;
-    -moz-box-shadow: 0 0 8px whitesmoke;
-    -webkit-box-shadow: 0 0 8px whitesmoke;
-    box-shadow: 0 0 8px whitesmoke;
-    background-color: aliceblue;
+    -moz-box-shadow: 0 0 10px whitesmoke;
+    -webkit-box-shadow: 0 0 10px whitesmoke;
+    box-shadow: 0 0 10px whitesmoke;
+    background-color: #EAF0F7;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -233,5 +234,14 @@ ul
     -webkit-columns: 2;
     -moz-columns: 2;
     margin-left: -27px;
+}
+
+#forkme
+{
+    position: fixed;
+    top: 0;
+    right: 0;
+    max-width: 100%;
+    max-height: 100%;
 }
 </style>
