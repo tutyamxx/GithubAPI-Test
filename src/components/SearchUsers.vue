@@ -15,10 +15,11 @@
 
             <!-- Github searched user profile details with a bit of error checking -->
             <p><b>🕵️‍♂️ Username:</b> {{searched_user.login}}</p>
-            <p><b>🕵️‍♂️ Name:</b> {{(searched_user.name === null) ? "Not found" : searched_user.name}}</p>
+            <p><b>👨‍🎓 Name:</b> {{(searched_user.name === null) ? "Not found" : searched_user.name}}</p>
             <p><b>🌍 Location:</b> {{(searched_user.location === null) ? "Not found" : searched_user.location}}</p>
             <p><b>📚 Public Repos:</b> {{(searched_user.public_repos === 0) ? "No repositories" : searched_user.public_repos}}</p>
             <p><b>🏷️ Bio:</b> {{(searched_user.bio === null) ? "Not found" : searched_user.bio}}</p>
+            <p><b>✍️ Last Activity:</b> {{(last_activity.length > 0) ? last_activity[0].type : "Unknown Activity"}}</p>
 
             <!-- If there is no url provided from JSON data (null or empty), this will be empty anyway -->
             <p><b>🏷️ Profile Url:</b> <a :href="searched_user.html_url" target="_blank">{{searched_user.html_url}}</a></p>
@@ -54,7 +55,8 @@ export default
             searched_user: "",
             searched_user_avatar: DefaultGitAvatar,
             searched_user_repos: [],
-            show_error: null
+            show_error: null,
+            last_activity: []
         };
     },
 
@@ -105,6 +107,16 @@ export default
 
                     // --| Delete the error message after 2 seconds
                     setTimeout(() => { this.show_error = null; }, 2500);
+                });
+
+                // --| After second request completed, wait to get the last activity of the searched user from Github API V3
+                await axios.get("https://api.github.com/users/" + this.search_query + "/events", GithubHeader).then(async (response) =>
+                {
+                    this.last_activity = await response.data;
+
+                }).catch(() =>
+                {
+                    this.last_activity = [{ type: "Unknown" }]
                 });
             }
 
