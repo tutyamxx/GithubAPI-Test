@@ -138,7 +138,7 @@ export default
     border-radius: 5px;
     width: 50%;
     height: 40px;
-    font-family: 'Special Elite', cursive;
+    font-family: 'Martel Sans', sans-serif;
     padding: 8px;
     -moz-box-shadow: 0 0 8px whitesmoke;
     -webkit-box-shadow: 0 0 8px whitesmoke;
@@ -192,7 +192,7 @@ export default
     border-radius: 5px;
     width: 100px;
     height: 40px;
-    font-family: 'Special Elite', cursive;
+    font-family: 'Martel Sans', sans-serif;
     padding: 8px;
     -moz-box-shadow: 0 0 8px whitesmoke;
     -webkit-box-shadow: 0 0 8px whitesmoke;
@@ -204,11 +204,12 @@ export default
     color: whitesmoke;
     text-align: center;
     font-weight: bold;
+    padding-top: 6px;
 }
 
 #notfound
 {
-    font-family: 'Special Elite', cursive;
+    font-family: 'Martel Sans', sans-serif;
     text-align: center;
     font-weight: bold;
     color: brown;
