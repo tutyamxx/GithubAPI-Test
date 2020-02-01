@@ -12,7 +12,7 @@
         <!-- Show this div only if there is a result from Github API V3 and is not empty -->
         <div class="containerbox" v-if="searched_user">
             <!-- Github searched user avatar -->
-            <img id="user-avatar" :src="searched_user_avatar">
+            <a :href="searched_user_avatar + '?v=4'" target="_blank"><img id="user-avatar" :src="searched_user_avatar"></a>
 
             <!-- Github searched user profile details with a bit of error checking -->
             <p><b>🕵️‍♂️ Username:</b> {{searched_user.login}}</p>
