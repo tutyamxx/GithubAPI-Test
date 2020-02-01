@@ -18,4 +18,4 @@ setInterval(() =>
 
 }, 900000);
 
-export default app;
+module.exports.app = app;
