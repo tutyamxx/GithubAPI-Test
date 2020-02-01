@@ -79,6 +79,7 @@ export default
                 // --| Clear the values from result
                 this.searched_user = "";
                 this.searched_user_avatar = DefaultGitAvatar;
+                this.searched_user_repos = [];
 
                 // --| Delete the error message after 2 seconds
                 setTimeout(() => { this.show_error = null; }, 2500);
@@ -97,6 +98,7 @@ export default
                 // --| Clear the values from result
                 this.searched_user = "";
                 this.searched_user_avatar = DefaultGitAvatar;
+                this.searched_user_repos = [];
 
                 // --| Delete the error message after 2 seconds
                 setTimeout(() => { this.show_error = null; }, 2500);
@@ -189,7 +191,7 @@ export default
     font-weight: bold;
     color: brown;
     margin-top: 20px;
-    margin-bottom: -55px;
+    margin-bottom: -30px;
     padding: 10px;
 }
 
