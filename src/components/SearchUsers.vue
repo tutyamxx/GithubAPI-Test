@@ -113,10 +113,6 @@ export default
                 await axios.get("https://api.github.com/users/" + this.search_query + "/events", GithubHeader).then(async (response) =>
                 {
                     this.last_activity = await response.data;
-
-                }).catch(() =>
-                {
-                    this.last_activity = [{ type: "Unknown" }]
                 });
             }
 
