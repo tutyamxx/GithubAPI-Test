@@ -9,7 +9,7 @@
         <span v-html="show_error"></span><br>
 
         <!-- Show this div only if there is a result from Github API V3 and is not empty -->
-        <div class="containerbox" v-if="searched_user.length > 0">
+        <div class="containerbox" v-if="searched_user">
             <!-- Github searched user avatar -->
             <img id="user-avatar" :src="searched_user_avatar">
 
@@ -25,7 +25,12 @@
         </div>
 
         <!-- Github searched user list of all public repos, if it's empty, this will not be displayed on the page -->
-        <div class="containerbox" v-for="repo in searched_user_repos" v-bind:key="repo.id">{{repo.full_name}} URL -> {{repo.html_url}}></div><br>
+        <div class="containerbox" v-if="searched_user_repos.length > 0">
+            <p id="repos">📚 Repositories Available:</p>
+            <ul>
+                <li v-for="repo in searched_user_repos" v-bind:key="repo.id">🔗<a :href="repo.html_url" target="_blank">{{repo.full_name}}</a></li>
+            </ul>
+        </div><br>
     </div>
 </template>
 
@@ -119,7 +124,7 @@ export default
 
 .containerbox
 {
-    margin-top: 45px;
+    margin-top: 20px;
     width: 100%;
     height: 100%;
     max-width: 100%;
@@ -135,6 +140,7 @@ export default
     -moz-border-radius: 5px;
     border-radius: 5px;
     padding: 10px;
+    padding-top: 30px;
     position: relative;
     overflow-wrap: break-word;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -185,5 +191,13 @@ export default
     margin-top: 20px;
     margin-bottom: -55px;
     padding: 10px;
+}
+
+#repos
+{
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    padding: 8px;
+    text-align: center;
+    margin-bottom: 25px;
 }
 </style>
