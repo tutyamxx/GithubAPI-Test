@@ -28,7 +28,7 @@
         <div class="containerbox" v-if="searched_user_repos.length > 0">
             <p id="repos">📚 Repositories Available:</p>
             <ul>
-                <li v-for="repo in searched_user_repos" v-bind:key="repo.id">🔗<a :href="repo.html_url" target="_blank">{{repo.full_name}}</a></li>
+                <li v-for="repo in searched_user_repos" v-bind:key="repo.id">🔗&nbsp;<a :href="repo.html_url" target="_blank">{{repo.full_name}}</a></li>
             </ul>
         </div><br>
     </div>
@@ -63,46 +63,59 @@ export default
         // --| When the user clicked the search button
         clicked_search: async function ()
         {
-            // --| Wait to get basic details about the searched user from Github API V3
-            await axios.get("https://api.github.com/users/" + this.search_query, GithubHeader).then(async (response) =>
+            // --| Don't flood the Github API with empty requests (60 requests per minute for public access)
+            if(this.search_query !== "")
             {
-                this.searched_user = await response.data;
+                // --| Wait to get basic details about the searched user from Github API V3
+                await axios.get("https://api.github.com/users/" + this.search_query, GithubHeader).then(async (response) =>
+                {
+                    this.searched_user = await response.data;
 
-                // --| Remove ?v=4 at the end of the avatar URL
-                this.searched_user_avatar = await response.data.avatar_url.replace("?v=4", "");
+                    // --| Remove ?v=4 at the end of the avatar URL
+                    this.searched_user_avatar = await response.data.avatar_url.replace("?v=4", "");
 
-            }).catch((e) =>
+                }).catch((e) =>
+                {
+                    // --| Display an error
+                    this.show_error = '<div id="notfound">' + e.message + '</div>';
+
+                    // --| Clear the values from result
+                    this.searched_user = "";
+                    this.searched_user_avatar = DefaultGitAvatar;
+                    this.searched_user_repos = [];
+
+                    // --| Delete the error message after 2 seconds
+                    setTimeout(() => { this.show_error = null; }, 2500);
+                });
+
+                // --| After first request completed, wait to get the public repositories of the searched user from Github API V3
+                await axios.get("https://api.github.com/users/" + this.search_query + "/repos", GithubHeader).then(async (response) =>
+                {
+                    this.searched_user_repos = await response.data;
+
+                }).catch((e) =>
+                {
+                    // --| Display an error
+                    this.show_error = '<div id="notfound">' + e.message + '</div>';
+
+                    // --| Clear the values from result
+                    this.searched_user = "";
+                    this.searched_user_avatar = DefaultGitAvatar;
+                    this.searched_user_repos = [];
+
+                    // --| Delete the error message after 2 seconds
+                    setTimeout(() => { this.show_error = null; }, 2500);
+                });
+            }
+
+            else
             {
-                // --| Display an error
-                this.show_error = '<div id="notfound">' + e.message + '</div>';
-
-                // --| Clear the values from result
-                this.searched_user = "";
-                this.searched_user_avatar = DefaultGitAvatar;
-                this.searched_user_repos = [];
+                 // --| Display an error
+                this.show_error = '<div id="notfound">Search field cannot be empty!</div>';
 
                 // --| Delete the error message after 2 seconds
                 setTimeout(() => { this.show_error = null; }, 2500);
-            });
-
-            // --| After first request completed, wait to get the public repositories of the searched user from Github API V3
-            await axios.get("https://api.github.com/users/" + this.search_query + "/repos", GithubHeader).then(async (response) =>
-            {
-                this.searched_user_repos = await response.data;
-
-            }).catch((e) =>
-            {
-                // --| Display an error
-                this.show_error = '<div id="notfound">' + e.message + '</div>';
-
-                // --| Clear the values from result
-                this.searched_user = "";
-                this.searched_user_avatar = DefaultGitAvatar;
-                this.searched_user_repos = [];
-
-                // --| Delete the error message after 2 seconds
-                setTimeout(() => { this.show_error = null; }, 2500);
-            });
+            }
         }
     }
 };
@@ -179,7 +192,8 @@ export default
     margin-left: 5px;
     display: inline-block;
     padding-top: 5px;
-    background-color: whitesmoke;
+    background-color: #52CEA2;
+    color: whitesmoke;
     text-align: center;
     font-weight: bold;
 }
