@@ -29,7 +29,7 @@
         <div class="containerbox" v-if="searched_user_repos.length > 0">
             <p id="repos">📚 Repositories Available:</p>
             <ul>
-                <li v-for="repo in searched_user_repos" v-bind:key="repo.id">🔗&nbsp;<a :href="repo.html_url" target="_blank">{{repo.full_name}}</a></li>
+                <li v-for="repo in searched_user_repos" v-bind:key="repo.id">🔗<a :href="repo.html_url" target="_blank">{{repo.full_name}}</a></li>
             </ul>
         </div><br>
     </div>
@@ -223,5 +223,14 @@ export default
     padding: 8px;
     text-align: center;
     margin-bottom: 25px;
+}
+
+ul
+{
+    list-style-type: none;
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+    margin-left: -27px;
 }
 </style>
