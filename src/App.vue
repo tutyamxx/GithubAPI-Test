@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Application Logo" src="https://mabletherapy.com/wp-content/themes/mabletherapy/assets/svgs/compressed/logo-mable.svg"> <p id="test">(TEST)</p>
+    <img alt="Application Logo" src="https://mabletherapy.com/wp-content/themes/mabletherapy/assets/svgs/compressed/logo-mable.svg"><p id="test">(TEST)</p>
     <SearchUsers />
   </div>
 </template>
@@ -41,5 +41,6 @@ body
     display: inline;
     color: whitesmoke;
     font-weight: bold;
+    font-size: large;
 }
 </style>

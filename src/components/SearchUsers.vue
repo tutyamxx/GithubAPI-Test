@@ -1,25 +1,31 @@
 <template>
     <div class="container">
+        <!-- Search box using vue | also autoselects the text on focus -->
         <div>
-            <input type="text" v-model="search_query" class="search" placeholder="Search user" @focus="$event.target.select();"><button id="search-user" @click="clicked_search" v-on:keyup.enter="clicked_search">Search</button>
+            <input type="text" v-model="search_query" class="search" placeholder="Search user" @focus="$event.target.select();"><button id="search-user" @click="clicked_search">Search</button>
         </div>
 
-        <span v-html="HTMLcontent"></span><br>
+        <!-- Empty error message placeholder (will be filled upon Github request errors) -->
+        <span v-html="show_error"></span><br>
 
-        <div class="maincontent">
+        <!-- Show this div only if there is a result from Github API V3 and is not empty -->
+        <div class="containerbox" v-if="searched_user.length > 0">
+            <!-- Github searched user avatar -->
             <img id="user-avatar" :src="searched_user_avatar">
 
+            <!-- Github searched user profile details with a bit of error checking -->
             <p><b>🕵️‍♂️ Username:</b> {{searched_user.login}}</p>
-            <p><b>🕵️‍♂️ Name:</b> {{(searched_user.name === null) ? "Not specified" : searched_user.name}}</p>
-            <p><b>🌍 Location:</b> {{(searched_user.location === null) ? "Not specified" : searched_user.location}}</p>
+            <p><b>🕵️‍♂️ Name:</b> {{(searched_user.name === null) ? "Not found" : searched_user.name}}</p>
+            <p><b>🌍 Location:</b> {{(searched_user.location === null) ? "Not found" : searched_user.location}}</p>
             <p><b>📚 Public Repos:</b> {{(searched_user.public_repos === 0) ? "No repositories" : searched_user.public_repos}}</p>
-            <p><b>🏷️ Bio:</b> {{(searched_user.bio === null) ? "Empty" : searched_user.bio}}</p>
+            <p><b>🏷️ Bio:</b> {{(searched_user.bio === null) ? "Not found" : searched_user.bio}}</p>
+
+            <!-- If there is no url provided from JSON data (null or empty), this will be empty anyway -->
             <p><b>🏷️ Profile Url:</b> <a :href="searched_user.html_url" target="_blank">{{searched_user.html_url}}</a></p>
         </div>
 
-        <div class="maincontent">
-            kekw
-        </div><br>
+        <!-- Github searched user list of all public repos, if it's empty, this will not be displayed on the page -->
+        <div class="containerbox" v-for="repo in searched_user_repos" v-bind:key="repo.id">{{repo.full_name}} URL -> {{repo.html_url}}></div><br>
     </div>
 </template>
 
@@ -43,7 +49,7 @@ export default
             searched_user: "",
             searched_user_avatar: DefaultGitAvatar,
             searched_user_repos: [],
-            HTMLcontent: null
+            show_error: null
         };
     },
 
@@ -52,7 +58,7 @@ export default
         // --| When the user clicked the search button
         clicked_search: async function ()
         {
-            // --| Get basic details about the searched user from Github API V3
+            // --| Wait to get basic details about the searched user from Github API V3
             await axios.get("https://api.github.com/users/" + this.search_query, GithubHeader).then(async (response) =>
             {
                 this.searched_user = await response.data;
@@ -63,16 +69,17 @@ export default
             }).catch((e) =>
             {
                 // --| Display an error
-                this.HTMLcontent = '<div id="notfound">' + e.message + '</div>';
+                this.show_error = '<div id="notfound">' + e.message + '</div>';
 
                 // --| Clear the values from result
                 this.searched_user = "";
                 this.searched_user_avatar = DefaultGitAvatar;
 
                 // --| Delete the error message after 2 seconds
-                setTimeout(() => { this.HTMLcontent = null; }, 2500);
+                setTimeout(() => { this.show_error = null; }, 2500);
             });
 
+            // --| After first request completed, wait to get the public repositories of the searched user from Github API V3
             await axios.get("https://api.github.com/users/" + this.search_query + "/repos", GithubHeader).then(async (response) =>
             {
                 this.searched_user_repos = await response.data;
@@ -80,14 +87,14 @@ export default
             }).catch((e) =>
             {
                 // --| Display an error
-                this.HTMLcontent = '<div id="notfound">' + e.message + '</div>';
+                this.show_error = '<div id="notfound">' + e.message + '</div>';
 
                 // --| Clear the values from result
                 this.searched_user = "";
                 this.searched_user_avatar = DefaultGitAvatar;
 
                 // --| Delete the error message after 2 seconds
-                setTimeout(() => { this.HTMLcontent = null; }, 2500);
+                setTimeout(() => { this.show_error = null; }, 2500);
             });
         }
     }
@@ -110,7 +117,7 @@ export default
     box-shadow: 0 0 8px whitesmoke;
 }
 
-.maincontent
+.containerbox
 {
     margin-top: 45px;
     width: 100%;
