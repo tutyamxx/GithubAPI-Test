@@ -8,5 +8,12 @@
 * To test it live, go here ➡️ https://mabletest.herokuapp.com/
 * Careful, free API without authentication (which is used here) is limited to **60** requests per hour!
 
+# Local Install
+
+* Clone this repo
+* **npm i**
+* To start it type **npm run serve** for development
+* To run tests type **npm run test:unit**
+
 
 :)
