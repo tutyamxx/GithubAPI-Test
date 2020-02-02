@@ -62,6 +62,9 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+    -webkit-box-shadow: 0 0 10px rgb(0,0,0);
+    -moz-box-shadow: 0 0 10px rgb(0,0,0);
+    box-shadow: 0 0 10px rgb(0,0,0);
 }
 
 #search-user
