@@ -15,6 +15,7 @@ describe("Some Simple Testing", () =>
     {
         const SearchBox = wrapper.find("input");
 
+        expect(SearchBox.attributes("class")).to.be.equal("search");
         expect(SearchBox).to.exist.to.be.empty;
     });
 
@@ -22,6 +23,7 @@ describe("Some Simple Testing", () =>
     {
         const SearchButton = wrapper.find("button");
 
+        expect(SearchButton.attributes("id")).to.be.equal("search-user");
         expect(SearchButton).to.exist.to.be.a("object");
         expect(Object.keys(SearchButton).length).to.be.equal(0);
         expect(SearchButton.text()).to.be.equal("Search");
@@ -30,6 +32,10 @@ describe("Some Simple Testing", () =>
     it("Should not allow to search empty values", () =>
     {
         const SearchButton = wrapper.find("button");
+        expect(SearchButton.attributes("id")).to.be.equal("search-user");
+        expect(SearchButton).to.exist.to.be.a("object");
+        expect(Object.keys(SearchButton).length).to.be.equal(0);
+        
         const ErrorMessageElement = wrapper.find("span");
 
         SearchButton.trigger("click");
