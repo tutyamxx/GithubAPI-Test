@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <a href="https://github.com/tutyamxx/MableTherapyTest/fork"><img width="149" height="149" id="forkme" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+        
         <!-- Search box using vue | also autoselects the text on focus -->
         <div>
             <input type="text" v-model="search_query" class="search" placeholder="Search user" @focus="$event.target.select();"><button id="search-user" @click="clicked_search">Search</button>
@@ -9,8 +10,12 @@
         <!-- Empty error message placeholder (will be filled upon Github request errors) -->
         <span v-html="show_error"></span><br>
 
+        <!-- Some loadng animation when user clicks search -->
+        <div class="loading" v-if="loading_animation"><img src="../assets/loading.gif"></div>
+
         <!-- Show this div only if there is a result from Github API V3 and is not empty -->
-        <div class="containerbox" v-if="searched_user">
+        <div class="containerbox" v-if="searched_user && loading_animation === false">
+
             <!-- Github searched user avatar -->
             <a :href="searched_user_avatar + '?v=4'" target="_blank"><img id="user-avatar" :src="searched_user_avatar"></a>
 
@@ -27,7 +32,7 @@
         </div>
 
         <!-- Github searched user list of all public repos, if it's empty, this will not be displayed on the page -->
-        <div class="containerbox" v-if="searched_user_repos.length > 0">
+        <div class="containerbox" v-if="searched_user_repos.length > 0 && loading_animation === false">
             <p id="repos">📚 Repositories Available:</p>
             <ul>
                 <li v-for="repo in searched_user_repos" v-bind:key="repo.id">🔗<a :href="repo.html_url" target="_blank">{{repo.full_name}}</a></li>
@@ -58,7 +63,8 @@ export default
             searched_user_repos: [],
             show_error: null,
             last_activity: [],
-            last_commit_sha: ""
+            last_commit_sha: "",
+            loading_animation: false
         };
     },
 
@@ -67,6 +73,8 @@ export default
         // --| When the user clicked the search button
         clicked_search: async function ()
         {
+            this.loading_animation = true;
+
             // --| Don't flood the Github API with empty requests (60 requests per hour idk for public access)
             if(this.search_query !== "")
             {
@@ -75,6 +83,7 @@ export default
                 {
                     // --| Set the details
                     this.searched_user = await response.data;
+                    this.loading_animation = false;
 
                     // --| Remove ?v=4 at the end of the avatar URL
                     this.searched_user_avatar = await response.data.avatar_url.replace("?v=4", "");
@@ -109,6 +118,7 @@ export default
                     this.searched_user = "";
                     this.searched_user_avatar = DefaultGitAvatar;
                     this.searched_user_repos = [];
+                    this.loading_animation = false;
 
                     // --| Delete the error message after 2 seconds
                     setTimeout(() => { this.show_error = null; }, 2500);
