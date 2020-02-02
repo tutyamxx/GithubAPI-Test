@@ -32,6 +32,7 @@ describe("Some Simple Testing", () =>
     it("Should not allow to search empty values", () =>
     {
         const SearchButton = wrapper.find("button");
+
         expect(SearchButton.attributes("id")).to.be.equal("search-user");
         expect(SearchButton).to.exist.to.be.a("object");
         expect(Object.keys(SearchButton).length).to.be.equal(0);
