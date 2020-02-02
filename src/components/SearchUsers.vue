@@ -67,7 +67,7 @@ export default
         // --| When the user clicked the search button
         clicked_search: async function ()
         {
-            // --| Don't flood the Github API with empty requests (60 requests per minute for public access)
+            // --| Don't flood the Github API with empty requests (60 requests per hour idk for public access)
             if(this.search_query !== "")
             {
                 // --| Wait to get basic details about the searched user from Github API V3
