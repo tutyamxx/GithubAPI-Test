@@ -35,8 +35,9 @@ describe("Some Simple Testing", () =>
         expect(SearchButton.attributes("id")).to.be.equal("search-user");
         expect(SearchButton).to.exist.to.be.a("object");
         expect(Object.keys(SearchButton).length).to.be.equal(0);
-        
+
         const ErrorMessageElement = wrapper.find("span");
+        expect(ErrorMessageElement.is("span")).to.be.true;
 
         SearchButton.trigger("click");
         expect(ErrorMessageElement.text()).to.be.equal("Search field cannot be empty!").and.not.to.be.empty;
