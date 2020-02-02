@@ -73,6 +73,7 @@ export default
                 // --| Wait to get basic details about the searched user from Github API V3
                 await axios.get("https://api.github.com/users/" + this.search_query, GithubHeader).then(async (response) =>
                 {
+                    // --| Set the details
                     this.searched_user = await response.data;
 
                     // --| Remove ?v=4 at the end of the avatar URL
@@ -80,8 +81,29 @@ export default
 
                 }).catch((e) =>
                 {
+                    // --| Custom message response
+                    let szResponseMessage = "";
+
+                    switch(e.response.status)
+                    {
+                        // --| 404 - not found
+                        case 404:
+                            szResponseMessage = "User not found";
+                            break;
+                        
+                        // --| API reaching limit of requests
+                        case 403:
+                            szResponseMessage = "Request limit reached, try again in 1 hour";
+                            break;
+                        
+                        // --| If there is none of the above just display the error as a message
+                        default:
+                            szResponseMessage = e.message;
+                            break;
+                    }
+
                     // --| Display an error
-                    this.show_error = '<div id="notfound">' + e.message + '</div>';
+                    this.show_error = '<div id="notfound">' + szResponseMessage + '</div>';
 
                     // --| Clear the values from result
                     this.searched_user = "";
@@ -97,15 +119,12 @@ export default
                 {
                     this.searched_user_repos = await response.data;
 
-                }).catch((e) =>
+                }).catch(() =>
                 {
-                    // --| Display an error
-                    this.show_error = '<div id="notfound">' + e.message + '</div>';
-
                     // --| Clear the values from result
                     this.searched_user = "";
-                    this.searched_user_avatar = DefaultGitAvatar;
                     this.searched_user_repos = [];
+                    this.searched_user_avatar = DefaultGitAvatar;
 
                     // --| Delete the error message after 2 seconds
                     setTimeout(() => { this.show_error = null; }, 2500);
@@ -126,7 +145,8 @@ export default
                     
                     // --| No commit, no sha to pass.
                     else { this.last_commit_sha = ""; }
-                });
+
+                }).catch(() => { });
             }
 
             else
