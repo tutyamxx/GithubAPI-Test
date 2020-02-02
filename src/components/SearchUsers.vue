@@ -20,7 +20,7 @@
             <p><b>🌍 Location:</b> {{(searched_user.location === null) ? "Not found" : searched_user.location}}</p>
             <p><b>📚 Public Repos:</b> {{(searched_user.public_repos === 0) ? "No repositories" : searched_user.public_repos}}</p>
             <p><b>🏷️ Bio:</b> {{(searched_user.bio === null) ? "Not found" : searched_user.bio}}</p>
-            <p><b>✍️ Last Activity:</b> {{(last_activity.length > 0) ? last_activity[0].type : "Unknown Activity"}}</p>
+            <p><b>✍️ Last Activity:</b> {{(last_activity.length > 0) ? last_activity[0].type.replace("Event", "") + " ➡️ " + last_activity[0].repo.name + last_commit_sha : "Unknown Activity 👀"}}</p>
 
             <!-- If there is no url provided from JSON data (null or empty), this will be empty anyway -->
             <p><b>🏷️ Profile Url:</b> <a :href="searched_user.html_url" target="_blank">{{searched_user.html_url}}</a></p>
@@ -57,7 +57,8 @@ export default
             searched_user_avatar: DefaultGitAvatar,
             searched_user_repos: [],
             show_error: null,
-            last_activity: []
+            last_activity: [],
+            last_commit_sha: ""
         };
     },
 
@@ -113,13 +114,24 @@ export default
                 // --| After second request completed, wait to get the last activity of the searched user from Github API V3
                 await axios.get("https://api.github.com/users/" + this.search_query + "/events", GithubHeader).then(async (response) =>
                 {
-                    this.last_activity = await response.data;
+                    // --| Get the response
+                    const UserActivity = await response.data;
+                    this.last_activity = UserActivity;
+                    
+                    // --| If event has any commits in it
+                    if(UserActivity[0] !== undefined && UserActivity[0].payload.hasOwnProperty("commits"))
+                    {
+                        this.last_commit_sha = " (" + UserActivity[0].payload.commits[0].sha.substr(0, 7) + ")";
+                    }
+                    
+                    // --| No commit, no sha to pass.
+                    else { this.last_commit_sha = ""; }
                 });
             }
 
             else
             {
-                 // --| Display an error
+                // --| Display an error
                 this.show_error = '<div id="notfound">Search field cannot be empty!</div>';
 
                 // --| Delete the error message after 2 seconds
@@ -131,117 +143,5 @@ export default
 </script>
 
 <style>
-.search
-{
-    margin-top: 30px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    width: 50%;
-    height: 40px;
-    font-family: 'Martel Sans', sans-serif;
-    padding: 8px;
-    -moz-box-shadow: 0 0 8px whitesmoke;
-    -webkit-box-shadow: 0 0 8px whitesmoke;
-    box-shadow: 0 0 8px whitesmoke;
-}
-
-.containerbox
-{
-    margin-top: 20px;
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    -moz-box-shadow: 0 0 10px whitesmoke;
-    -webkit-box-shadow: 0 0 10px whitesmoke;
-    box-shadow: 0 0 10px whitesmoke;
-    background-color: #EAF0F7;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    padding: 10px;
-    padding-top: 30px;
-    position: relative;
-    overflow-wrap: break-word;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-}
-
-#user-avatar
-{
-    margin-top: 5px;
-    margin-right: 5px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 100px;
-    max-height: 100%;
-    max-width: 100%;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-}
-
-#search-user
-{
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    width: 100px;
-    height: 40px;
-    font-family: 'Martel Sans', sans-serif;
-    padding: 8px;
-    -moz-box-shadow: 0 0 8px whitesmoke;
-    -webkit-box-shadow: 0 0 8px whitesmoke;
-    box-shadow: 0 0 8px whitesmoke;
-    margin-left: 5px;
-    display: inline-block;
-    padding-top: 5px;
-    background-color: #52CEA2;
-    color: whitesmoke;
-    text-align: center;
-    font-weight: bold;
-    padding-top: 6px;
-}
-
-#notfound
-{
-    font-family: 'Martel Sans', sans-serif;
-    text-align: center;
-    font-weight: bold;
-    color: brown;
-    margin-top: 20px;
-    margin-bottom: -30px;
-    padding: 10px;
-}
-
-#repos
-{
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    padding: 8px;
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-ul
-{
-    list-style-type: none;
-    columns: 2;
-    -webkit-columns: 2;
-    -moz-columns: 2;
-    margin-left: -27px;
-}
-
-#forkme
-{
-    position: fixed;
-    top: 0;
-    right: 0;
-    max-width: 100%;
-    max-height: 100%;
-}
+@import '../assets/css/style.css';
 </style>
