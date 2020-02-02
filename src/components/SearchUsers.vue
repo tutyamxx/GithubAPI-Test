@@ -188,7 +188,7 @@ export default
             const ActivityEvent = this.last_activity[0].type.replace("Event", "");
 
             // --| If the last activity is a EventPush, we want to get the commit and url, otherwise just display the event
-            return (ActivityEvent === "Push" ? ActivityEvent + " ➡️ " + this.last_activity[0].repo.name + '</a> (<a href="https://github.com/' + this.last_activity[0].repo.name + "/commit/" + this.last_commit_sha + '" target="_blank">' + this.last_commit_sha.substr(0, 7) + "</a>)" : ActivityEvent + " ➡️ " + this.last_activity[0].repo.name);
+            return (ActivityEvent === "Push" ? ActivityEvent + " ➡️ " + this.last_activity[0].repo.name + ' (<a href="https://github.com/' + this.last_activity[0].repo.name + "/commit/" + this.last_commit_sha + '" target="_blank">' + this.last_commit_sha.substr(0, 7) + "</a>)" : ActivityEvent + " ➡️ " + this.last_activity[0].repo.name);
         }
     }
 };
