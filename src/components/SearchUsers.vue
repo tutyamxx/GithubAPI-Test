@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <a href="https://github.com/tutyamxx/MableTherapyTest/fork"><img width="149" height="149" id="forkme" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+        <a href="https://github.com/tutyamxx/MableTherapyTest/fork"><img width="130" height="120" id="forkme" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a><br>
         
         <!-- Search box using vue | also autoselects the text on focus -->
         <div>
@@ -163,6 +163,7 @@ export default
             {
                 // --| Display an error
                 this.show_error = '<div id="notfound">Search field cannot be empty!</div>';
+                this.loading_animation = false;
 
                 // --| Delete the error message after 2 seconds
                 setTimeout(() => { this.show_error = null; }, 2500);
