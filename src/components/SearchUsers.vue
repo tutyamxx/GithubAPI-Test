@@ -25,10 +25,13 @@
             <p><b>🌍 Location:</b> {{(searched_user.location === null) ? "Not found" : searched_user.location}}</p>
             <p><b>📚 Public Repos:</b> {{(searched_user.public_repos === 0) ? "No repositories" : searched_user.public_repos}}</p>
             <p><b>🏷️ Bio:</b> {{(searched_user.bio === null) ? "Not found" : searched_user.bio}}</p>
-            <p><b>✍️ Last Activity:</b> {{(last_activity.length > 0) ? last_activity[0].type.replace("Event", "") + " ➡️ " + last_activity[0].repo.name + last_commit_sha : "Unknown Activity 👀"}}</p>
 
             <!-- If there is no url provided from JSON data (null or empty), this will be empty anyway -->
             <p><b>🏷️ Profile Url:</b> <a :href="searched_user.html_url" target="_blank">{{searched_user.html_url}}</a></p>
+
+            <!-- Show the user's last activity -->
+            <b>✍️ Last Activity:</b> <div id="activity" v-html="show_last_activity"></div>
+            <br>
         </div>
 
         <!-- Github searched user list of all public repos, if it's empty, this will not be displayed on the page -->
@@ -150,7 +153,7 @@ export default
                     // --| If event has any commits in it
                     if(UserActivity[0] !== undefined && UserActivity[0].payload.hasOwnProperty("commits"))
                     {
-                        this.last_commit_sha = " (" + UserActivity[0].payload.commits[0].sha.substr(0, 7) + ")";
+                        this.last_commit_sha = UserActivity[0].payload.commits[0].sha;
                     }
                     
                     // --| No commit, no sha to pass.
@@ -168,6 +171,24 @@ export default
                 // --| Delete the error message after 2 seconds
                 setTimeout(() => { this.show_error = null; }, 2500);
             }
+        }
+    },
+
+    computed:
+    {
+        show_last_activity: function ()
+        {
+            // --| If there is no activity, display custom response
+            if(this.last_activity.length <= 0)
+            {
+                return "Unknown Activity 👀";
+            }
+
+            // --| Get the activity type
+            const ActivityEvent = this.last_activity[0].type.replace("Event", "");
+
+            // --| If the last activity is a EventPush, we want to get the commit and url, otherwise just display the event
+            return (ActivityEvent === "Push" ? ActivityEvent + " ➡️ " + this.last_activity[0].repo.name + '</a> (<a href="https://github.com/' + this.last_activity[0].repo.name + "/commit/" + this.last_commit_sha + '" target="_blank">' + this.last_commit_sha.substr(0, 7) + "</a>)" : ActivityEvent + " ➡️ " + this.last_activity[0].repo.name);
         }
     }
 };

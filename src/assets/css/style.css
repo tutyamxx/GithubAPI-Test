@@ -116,7 +116,7 @@ ul
 
 #forkme
 {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     max-width: 100%;
@@ -161,4 +161,9 @@ body
 a
 {
     color: #41B883;
-};
+}
+
+#activity
+{
+    display: inline;
+}
