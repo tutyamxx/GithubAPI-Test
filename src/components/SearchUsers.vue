@@ -36,7 +36,7 @@
 
         <!-- Github searched user list of all public repos, if it's empty, this will not be displayed on the page -->
         <div class="containerbox" v-if="searched_user_repos.length > 0 && loading_animation === false">
-            <p id="repos">📚 Repositories Available:</p>
+            <p id="repos">📚 Latest Repositories Available:</p>
             <ul>
                 <li v-for="repo in searched_user_repos" v-bind:key="repo.id">🔗<a :href="repo.html_url" target="_blank">{{repo.full_name}}</a></li>
             </ul>
