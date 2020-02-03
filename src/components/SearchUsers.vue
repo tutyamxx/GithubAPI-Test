@@ -4,7 +4,7 @@
         
         <!-- Search box using vue | also autoselects the text on focus -->
         <div>
-            <input type="text" v-model.trim="search_query" class="search" placeholder="Search user" @keyup.enter="clicked_search" @focus="$event.target.select();"><button id="search-user" @click="clicked_search">Search</button>
+            <input type="text" v-model.trim="search_query" class="search" placeholder="Search user or paste Github URL" @keyup.enter="clicked_search" @focus="$event.target.select();"><button id="search-user" @click="clicked_search">Search</button>
         </div>
 
         <!-- Empty error message placeholder (will be filled upon Github request errors) -->
@@ -80,7 +80,9 @@ export default
             this.loading_animation = true;
 
             // --| Forgot to trim the search query and let people search usernames with spaces in front and after...
-            const FormatSearchQuery = this.search_query.trim();
+            // --| Also this magic allows to search directly from Github URL's too!
+            // --| Example: https://github.com/tutyamxx/MableTherapyTest -> will return "tutyamxx"
+            const FormatSearchQuery = this.search_query.trim().replace("https://github.com", "").split("/")[1];
 
             // --| Don't flood the Github API with empty requests (60 requests per hour idk for public access)
             if(FormatSearchQuery !== "")
