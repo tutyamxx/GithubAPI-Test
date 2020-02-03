@@ -13,6 +13,7 @@
     "axios": "^0.19.2",
     "core-js": "^3.4.4",
     "express": "^4.17.1",
+    "valid-url": "^1.0.9",
     "vue": "^2.6.10"
   },
   "devDependencies": {
