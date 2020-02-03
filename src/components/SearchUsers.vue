@@ -76,13 +76,17 @@ export default
         // --| When the user clicked the search button
         clicked_search: async function ()
         {
+            // --| Display a loading animation
             this.loading_animation = true;
 
+            // --| Forgot to trim the search query and let people search usernames with spaces in front and after...
+            const FormatSearchQuery = this.search_query.trim();
+
             // --| Don't flood the Github API with empty requests (60 requests per hour idk for public access)
-            if(this.search_query.trim() !== "")
+            if(FormatSearchQuery !== "")
             {
                 // --| Wait to get basic details about the searched user from Github API V3
-                await axios.get("https://api.github.com/users/" + this.search_query, GithubHeader).then(async (response) =>
+                await axios.get("https://api.github.com/users/" + FormatSearchQuery, GithubHeader).then(async (response) =>
                 {
                     // --| Set the details
                     this.searched_user = await response.data;
@@ -128,7 +132,7 @@ export default
                 });
 
                 // --| After first request completed, wait to get the public repositories of the searched user from Github API V3
-                await axios.get("https://api.github.com/users/" + this.search_query + "/repos", GithubHeader).then(async (response) =>
+                await axios.get("https://api.github.com/users/" + FormatSearchQuery + "/repos", GithubHeader).then(async (response) =>
                 {
                     this.searched_user_repos = await response.data;
 
@@ -144,7 +148,7 @@ export default
                 });
 
                 // --| After second request completed, wait to get the last activity of the searched user from Github API V3
-                await axios.get("https://api.github.com/users/" + this.search_query + "/events", GithubHeader).then(async (response) =>
+                await axios.get("https://api.github.com/users/" + FormatSearchQuery + "/events", GithubHeader).then(async (response) =>
                 {
                     // --| Get the response
                     const UserActivity = await response.data;
