@@ -4,7 +4,7 @@
         
         <!-- Search box using vue | also autoselects the text on focus -->
         <div>
-            <input type="text" v-model.trim="search_query" class="search" placeholder="Search user or paste Github URL" @keyup.enter="clicked_search" @focus="$event.target.select();"><button id="search-user" @click="clicked_search">Search</button>
+            <input type="text" v-model.trim="search_query" class="search" placeholder="Search user or paste Github URL" @keyup.enter="clicked_search($event);" @focus="$event.target.select();"><button id="search-user" @click="clicked_search($event);">Search</button>
         </div>
 
         <!-- Empty error message placeholder (will be filled upon Github request errors) -->
@@ -75,10 +75,13 @@ export default
     methods:
     {
         // --| When the user clicked the search button
-        clicked_search: async function ()
+        clicked_search: async function (event)
         {
             // --| Display a loading animation
             this.loading_animation = true;
+
+            // --| Blur after the query has been set
+            event.target.blur();
 
             // --| Forgot to trim the search query and let people search usernames with spaces in front and after...
             // --| Also this magic allows to search directly from Github URL's too!
@@ -87,7 +90,6 @@ export default
 
             // --| Check if URL starts with https or http ://github.
             let RegexCheckHTTP = new RegExp("^(http|https)://github.", "gi");
-
             FormatSearchQuery = (validUrl.isUri(FormatSearchQuery) && FormatSearchQuery.match(RegexCheckHTTP)) ? FormatSearchQuery = FormatSearchQuery.trim().replace(RegexCheckHTTP, "").split("/")[1] : FormatSearchQuery;
 
             // --| Don't flood the Github API with empty requests (60 requests per hour idk for public access)
