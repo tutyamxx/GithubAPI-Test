@@ -79,7 +79,7 @@ export default
             this.loading_animation = true;
 
             // --| Don't flood the Github API with empty requests (60 requests per hour idk for public access)
-            if(this.search_query !== "")
+            if(this.search_query.trim() !== "")
             {
                 // --| Wait to get basic details about the searched user from Github API V3
                 await axios.get("https://api.github.com/users/" + this.search_query, GithubHeader).then(async (response) =>
