@@ -85,7 +85,7 @@ export default
             const FormatSearchQuery = this.search_query.trim().replace("https://github.com", "").split("/")[1];
 
             // --| Don't flood the Github API with empty requests (60 requests per hour idk for public access)
-            if(FormatSearchQuery !== "")
+            if(FormatSearchQuery !== "" && FormatSearchQuery !== undefined)
             {
                 // --| Wait to get basic details about the searched user from Github API V3
                 await axios.get("https://api.github.com/users/" + FormatSearchQuery, GithubHeader).then(async (response) =>
