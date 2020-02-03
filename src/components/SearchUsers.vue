@@ -38,7 +38,7 @@
         <div class="containerbox" v-if="searched_user_repos.length > 0 && loading_animation === false">
             <p id="repos">📚 Latest Repositories Available:</p>
             <ul>
-                <li v-for="repo in searched_user_repos" v-bind:key="repo.id">🔗<a :href="repo.html_url" target="_blank">{{repo.full_name}}</a></li>
+                <li v-for="repo in searched_user_repos" v-bind:key="repo.id">🔗<a :href="repo.html_url" target="_blank">{{repo.full_name}}&nbsp;<b>({{(repo.language !== null) ? repo.language : "❓"}})</b></a></li>
             </ul>
         </div><br>
     </div>
