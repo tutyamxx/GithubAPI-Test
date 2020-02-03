@@ -171,7 +171,7 @@ export default
             else
             {
                 // --| Display an error
-                this.show_error = '<div id="notfound">Search field cannot be empty!</div>';
+                this.show_error = '<div id="notfound">Search field cannot be empty or URL provided is invalid!</div>';
                 this.loading_animation = false;
 
                 // --| Delete the error message after 2 seconds
