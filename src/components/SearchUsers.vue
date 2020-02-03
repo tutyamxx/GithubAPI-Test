@@ -4,7 +4,7 @@
         
         <!-- Search box using vue | also autoselects the text on focus -->
         <div>
-            <input type="text" v-model="search_query" class="search" placeholder="Search user" @keyup.enter="clicked_search" @focus="$event.target.select();"><button id="search-user" @click="clicked_search">Search</button>
+            <input type="text" v-model.trim="search_query" class="search" placeholder="Search user" @keyup.enter="clicked_search" @focus="$event.target.select();"><button id="search-user" @click="clicked_search">Search</button>
         </div>
 
         <!-- Empty error message placeholder (will be filled upon Github request errors) -->
