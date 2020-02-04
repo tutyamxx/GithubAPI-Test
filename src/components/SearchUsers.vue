@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 <template>
     <div class="container">
         <a href="https://github.com/tutyamxx/MableTherapyTest/fork"><img width="130" height="120" id="forkme" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a><br>
@@ -190,7 +189,7 @@ export default
                         // --| Delete the error message after 2 seconds
                         setTimeout(() => { this.show_error = null; }, 2500);
                     }
-                    
+
                     // --| Catch the error from the third url call
                     // eslint-disable-next-line no-empty
                     if(errorEvents) { }
