@@ -11,7 +11,7 @@
         <span v-html="show_error"></span><br>
 
         <!-- Some loadng animation when user clicks search -->
-        <div class="loading" v-if="loading_animation"><img src="../assets/loading.gif"></div>
+        <div class="loading" v-if="loading_animation"><img src="../assets/loading.svg"></div>
 
         <!-- Show this div only if there is a result from Github API V3 and is not empty -->
         <div class="containerbox" v-if="searched_user && loading_animation === false">
