@@ -101,8 +101,7 @@ export default
                     axios.get("https://api.github.com/users/" + FormatSearchQuery, GithubHeader), 
                     axios.get("https://api.github.com/users/" + FormatSearchQuery + "/repos", GithubHeader), 
                     axios.get("https://api.github.com/users/" + FormatSearchQuery + "/events", GithubHeader)
-
-                // eslint-disable-next-line no-unused-vars
+                    
                 ]).then(await axios.spread(async (ResponseForUsers, ResponseForRepos, ResponseForEvents) =>
                 {
                     // --| Handle stuff for basic user profile response
