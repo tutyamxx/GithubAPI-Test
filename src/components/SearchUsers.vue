@@ -171,6 +171,11 @@ export default
                                 szResponseMessage = "Request limit reached, try again in 1 hour";
                                 break;
                             
+                            // --| 400 - Bad Request
+                            case 400:
+                                szResponseMessage = "Bad request 😡";
+                                break;
+                            
                             // --| If there is none of the above just display the error as a message
                             default:
                                 szResponseMessage = errorUser.message;
