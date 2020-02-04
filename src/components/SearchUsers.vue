@@ -90,11 +90,24 @@ export default
 
             // --| Check if URL starts with https or http ://github.
             let RegexCheckHTTP = new RegExp("^(http|https)://github.", "gi");
-            FormatSearchQuery = (validUrl.isUri(FormatSearchQuery) && FormatSearchQuery.match(RegexCheckHTTP)) ? FormatSearchQuery = FormatSearchQuery.trim().replace(RegexCheckHTTP, "").split("/")[1] : FormatSearchQuery;
+            FormatSearchQuery = (validUrl.isUri(FormatSearchQuery) && FormatSearchQuery.match(RegexCheckHTTP)) ? this.search_query = FormatSearchQuery = FormatSearchQuery.trim().replace(RegexCheckHTTP, "").split("/")[1] : FormatSearchQuery;
 
             // --| Don't flood the Github API with empty requests (60 requests per hour idk for public access)
             if(FormatSearchQuery !== "")
             {
+                 // --| Check if is not a valid Github URL and display a error
+                if(validUrl.isUri(FormatSearchQuery) && !FormatSearchQuery.match(RegexCheckHTTP))
+                {
+                    // --| Display an error
+                    this.show_error = '<div id="notfound">Not a valid Github URL!</div>';
+                    this.loading_animation = false;
+
+                    // --| Delete the error message after 2 seconds
+                    setTimeout(() => { this.show_error = null; }, 2500);
+
+                    return;
+                }
+                
                 // --| Call our URLs for the searched user from Github API V3 in one single request
                 await axios.all(
                 [
