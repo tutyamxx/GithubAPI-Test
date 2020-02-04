@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 <template>
     <div class="container">
         <a href="https://github.com/tutyamxx/MableTherapyTest/fork"><img width="130" height="120" id="forkme" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a><br>
@@ -95,85 +96,105 @@ export default
             // --| Don't flood the Github API with empty requests (60 requests per hour idk for public access)
             if(FormatSearchQuery !== "")
             {
-                // --| Wait to get basic details about the searched user from Github API V3
-                await axios.get("https://api.github.com/users/" + FormatSearchQuery, GithubHeader).then(async (response) =>
+                // --| Call our URLs for the searched user from Github API V3 in one single request
+                await axios.all(
+                [
+                    axios.get("https://api.github.com/users/" + FormatSearchQuery, GithubHeader), 
+                    axios.get("https://api.github.com/users/" + FormatSearchQuery + "/repos", GithubHeader), 
+                    axios.get("https://api.github.com/users/" + FormatSearchQuery + "/events", GithubHeader)
+
+                // eslint-disable-next-line no-unused-vars
+                ]).then(await axios.spread(async (ResponseForUsers, ResponseForRepos, ResponseForEvents) =>
                 {
-                    // --| Set the details
-                    this.searched_user = await response.data;
-                    this.loading_animation = false;
-
-                    // --| Remove ?v=4 at the end of the avatar URL
-                    this.searched_user_avatar = await response.data.avatar_url.replace("?v=4", "");
-
-                }).catch((e) =>
-                {
-                    // --| Custom message response
-                    let szResponseMessage = "";
-
-                    switch(e.response.status)
+                    // --| Handle stuff for basic user profile response
+                    if(ResponseForUsers)
                     {
-                        // --| 404 - not found
-                        case 404:
-                            szResponseMessage = "User not found";
-                            break;
-                        
-                        // --| API reaching limit of requests
-                        case 403:
-                            szResponseMessage = "Request limit reached, try again in 1 hour";
-                            break;
-                        
-                        // --| If there is none of the above just display the error as a message
-                        default:
-                            szResponseMessage = e.message;
-                            break;
+                        // --| Set the details
+                        this.searched_user = await ResponseForUsers.data;
+                        this.loading_animation = false;
+
+                        // --| Remove ?v=4 at the end of the avatar URL
+                        this.searched_user_avatar = await ResponseForUsers.data.avatar_url.replace("?v=4", "");
                     }
 
-                    // --| Display an error
-                    this.show_error = '<div id="notfound">' + szResponseMessage + '</div>';
-
-                    // --| Clear the values from result
-                    this.searched_user = "";
-                    this.searched_user_avatar = DefaultGitAvatar;
-                    this.searched_user_repos = [];
-                    this.loading_animation = false;
-
-                    // --| Delete the error message after 2 seconds
-                    setTimeout(() => { this.show_error = null; }, 2500);
-                });
-
-                // --| After first request completed, wait to get the public repositories of the searched user from Github API V3
-                await axios.get("https://api.github.com/users/" + FormatSearchQuery + "/repos", GithubHeader).then(async (response) =>
-                {
-                    this.searched_user_repos = await response.data;
-
-                }).catch(() =>
-                {
-                    // --| Clear the values from result
-                    this.searched_user = "";
-                    this.searched_user_repos = [];
-                    this.searched_user_avatar = DefaultGitAvatar;
-
-                    // --| Delete the error message after 2 seconds
-                    setTimeout(() => { this.show_error = null; }, 2500);
-                });
-
-                // --| After second request completed, wait to get the last activity of the searched user from Github API V3
-                await axios.get("https://api.github.com/users/" + FormatSearchQuery + "/events", GithubHeader).then(async (response) =>
-                {
-                    // --| Get the response
-                    const UserActivity = await response.data;
-                    this.last_activity = UserActivity;
-                    
-                    // --| If event has any commits in it
-                    if(UserActivity[0] !== undefined && UserActivity[0].payload.hasOwnProperty("commits"))
+                    // --| Handle stuff for repo response
+                    if(ResponseForRepos)
                     {
-                        this.last_commit_sha = UserActivity[0].payload.commits[0].sha;
+                        this.searched_user_repos = await ResponseForRepos.data;
+                    }
+
+                    // --| Handle stuff for events response
+                    if(ResponseForEvents)
+                    {
+                        // --| Get the response
+                        const UserActivity = await ResponseForEvents.data;
+                        this.last_activity = UserActivity;
+                        
+                        // --| If event has any commits in it
+                        if(UserActivity[0] !== undefined && UserActivity[0].payload.hasOwnProperty("commits"))
+                        {
+                            this.last_commit_sha = UserActivity[0].payload.commits[0].sha;
+                        }
+                        
+                        // --| No commit, no sha to pass.
+                        else { this.last_commit_sha = ""; }
+                    }
+
+                })).catch((errorUser, errorRepos, errorEvents) =>
+                {
+                    // --| Catch any error from the first url call
+                    if(errorUser)
+                    {
+                        // --| Custom message response
+                        let szResponseMessage = "";
+
+                        switch(errorUser.response.status)
+                        {
+                            // --| 404 - not found
+                            case 404:
+                                szResponseMessage = "User not found";
+                                break;
+                            
+                            // --| API reaching limit of requests
+                            case 403:
+                                szResponseMessage = "Request limit reached, try again in 1 hour";
+                                break;
+                            
+                            // --| If there is none of the above just display the error as a message
+                            default:
+                                szResponseMessage = errorUser.message;
+                                break;
+                        }
+
+                        // --| Display an error
+                        this.show_error = '<div id="notfound">' + szResponseMessage + '</div>';
+
+                        // --| Clear the values from result
+                        this.searched_user = "";
+                        this.searched_user_avatar = DefaultGitAvatar;
+                        this.searched_user_repos = [];
+                        this.loading_animation = false;
+
+                        // --| Delete the error message after 2 seconds
+                        setTimeout(() => { this.show_error = null; }, 2500);
+                    }
+
+                    // --| Catch the error from second url call
+                    if(errorRepos)
+                    {
+                        // --| Clear the values from result
+                        this.searched_user = "";
+                        this.searched_user_repos = [];
+                        this.searched_user_avatar = DefaultGitAvatar;
+
+                        // --| Delete the error message after 2 seconds
+                        setTimeout(() => { this.show_error = null; }, 2500);
                     }
                     
-                    // --| No commit, no sha to pass.
-                    else { this.last_commit_sha = ""; }
-
-                }).catch(() => { });
+                    // --| Catch the error from the third url call
+                    // eslint-disable-next-line no-empty
+                    if(errorEvents) { }
+                });
             }
 
             else
