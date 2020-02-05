@@ -89,8 +89,8 @@ export default
             let FormatSearchQuery = this.search_query.trim();
 
             // --| Check if URL starts with https or http ://github.
-            let RegexCheckHTTP = new RegExp("^(http|https)://github.", "gi");
-            FormatSearchQuery = (validUrl.isUri(FormatSearchQuery) && FormatSearchQuery.match(RegexCheckHTTP)) ? this.search_query = FormatSearchQuery = FormatSearchQuery.trim().replace(RegexCheckHTTP, "").split("/")[1] : FormatSearchQuery.replace("%", "");
+            let RegexCheckHTTP = new RegExp(/^(?:https?:\/\/)?(?:www\.)?github\.[a-zA-Z/]+$/, "g");
+            FormatSearchQuery = (FormatSearchQuery.match(RegexCheckHTTP)) ? this.search_query = FormatSearchQuery = FormatSearchQuery.trim().replace(/(https?:\/\/|www\.)/gi, "").split("/")[1] : FormatSearchQuery.replace("%", "");
 
             // --| Don't flood the Github API with empty requests (60 requests per hour idk for public access)
             if(FormatSearchQuery !== "")
