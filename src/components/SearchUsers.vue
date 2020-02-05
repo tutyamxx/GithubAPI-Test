@@ -235,8 +235,9 @@ export default
                 return "Unknown Activity 👀";
             }
 
-            // --| Get the activity type
-            const ActivityEvent = this.last_activity[0].type.replace("Event", "");
+            // --| Get the activity type, remove Event part from the string and add spaces after each capital letter
+            // --| Example of the process: PullRequest -> Pull Request
+            const ActivityEvent = this.last_activity[0].type.replace("Event", "").split(/(?=[A-Z])/).join(" ");
 
             // --| If the last activity is a EventPush, we want to get the commit and url, otherwise just display the event
             return (ActivityEvent === "Push" ? ActivityEvent + " ➡️ " + this.last_activity[0].repo.name + ' (<a href="https://github.com/' + this.last_activity[0].repo.name + "/commit/" + this.last_commit_sha + '" target="_blank">' + this.last_commit_sha.substr(0, 7) + "</a>)" : ActivityEvent + " ➡️ " + this.last_activity[0].repo.name);
