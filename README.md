@@ -15,7 +15,7 @@
 
 # Search
 
-* You can search by any username or you can search by Github URLS (all variants work fine). See example of url's:
+* You can search by **any username** or you can search by **Github URL's** (all variants work fine). See example of URL's:
 
 - www.github.com/tutyamxx
 - https://github.com/tutyamxx/MableTherapyTest/commit/4467571986f86bf862b471055da8a43c93df0868
