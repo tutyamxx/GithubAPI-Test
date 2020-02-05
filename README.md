@@ -13,5 +13,18 @@
 * To start it type **npm run serve** for development
 * To run tests type **npm run test:unit**
 
+# Search
+
+* You can search by any username or you can search by Github URLS (all variants work fine). See example of url's:
+
+- www.github.com/tutyamxx
+- https://github.com/tutyamxx/MableTherapyTest/commit/4467571986f86bf862b471055da8a43c93df0868
+- https://www.github.com/tutyamxx
+- http://www.github.com/tutyamxx
+- http://github.com/tutyamxx
+- https://github.com/tutyamxx
+- github.com/tutyamxx
+
+All the URL's above pasted in the search box, will return my profile details.
 
 :)
