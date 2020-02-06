@@ -8,7 +8,7 @@
         </div>
 
         <!-- Empty error message placeholder (will be filled upon Github request errors) -->
-        <span v-html="show_error"></span><br>
+        <span v-html="show_error" v-if="show_error"></span><br>
 
         <!-- Some loadng animation when user clicks search -->
         <div class="loading" v-if="loading_animation"><img src="../assets/loading.svg"></div>
@@ -27,7 +27,7 @@
             <p><b>🏷️ Bio:</b> {{(searched_user.bio === null) ? "Not found" : searched_user.bio}}</p>
 
             <!-- If there is no url provided from JSON data (null or empty), this will be empty anyway -->
-            <p><b>🏷️ Profile Url:</b> <a :href="searched_user.html_url" target="_blank">{{searched_user.html_url}}</a></p>
+            <p><b>🏷️ Profile URL:</b> <a :href="searched_user.html_url" target="_blank">{{searched_user.html_url}}</a></p>
 
             <!-- Show the user's last activity -->
             <b>✍️ Last Activity:</b> <div id="activity" v-html="show_last_activity"></div>
@@ -38,7 +38,7 @@
         <div class="containerbox" v-if="searched_user_repos.length > 0 && loading_animation === false">
             <p id="repos">📚 Latest Repositories Available:</p>
             <ul>
-                <li v-for="repo in searched_user_repos" v-bind:key="repo.id">🔗<a :href="repo.html_url" target="_blank">{{repo.full_name}}&nbsp;<b>({{(repo.language !== null) ? repo.language : "❓"}})</b></a></li>
+                <li v-for="repo in searched_user_repos" v-bind:key="repo.id">🔗<a :href="repo.html_url" target="_blank">{{repo.full_name}}&nbsp;<b>({{(repo.language !== null && !repo.forked) ? repo.language : "🔱Fork"}})</b></a></li>
             </ul>
         </div><br>
     </div>
@@ -94,7 +94,7 @@ export default
             FormatSearchQuery = (FormatSearchQuery.match(RegexCheckHTTP)) ? this.search_query = FormatSearchQuery = FormatSearchQuery.trim().replace(/(https?:\/\/|www\.)/gi, "").split("/")[1] : FormatSearchQuery.replace("%", "");
 
             // --| Don't flood the Github API with empty requests (60 requests per hour idk for public access)
-            if(FormatSearchQuery !== "")
+            if(FormatSearchQuery !== "" && FormatSearchQuery.length > 0)
             {
                  // --| Check if is not a valid Github URL and display a error
                 if(validUrl.isUri(FormatSearchQuery) && !FormatSearchQuery.match(RegexCheckHTTP))
