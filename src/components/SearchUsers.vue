@@ -244,7 +244,7 @@ export default
             {
                 // --| If the last activity is a EventPush, we want to get the commit and url
                 case "PushEvent":
-                    ActivityEvent = ActivityEvent + " ➡️ <b>" + this.last_activity[0].repo.name + "</b> ➡️ (" + this.last_activity[0].payload.commits[0].message + ' 🚀<a href="https://github.com/' + this.last_activity[0].repo.name + "/commit/" + this.last_commit_sha + '" target="_blank">' + this.last_commit_sha.substr(0, 7) + "</a>)";
+                    ActivityEvent = ActivityEvent + " ➡️ <b>" + this.last_activity[0].repo.name + "</b> ➡️ (" + this.last_activity[0].payload.commits[0].message + ') (🚀<a href="https://github.com/' + this.last_activity[0].repo.name + "/commit/" + this.last_commit_sha + '" target="_blank">' + this.last_commit_sha.substr(0, 7) + "</a>)";
                     break;
 
                 // --| If the last activity is a EventWatch, we want to get the watched repository URL
