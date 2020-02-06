@@ -14,7 +14,7 @@ app.listen(port);
 // --| Ping Heroku app and prevent it from sleeping every 15 minutes
 setInterval(() =>
 {
-    http.get("http://mabletest.herokuapp.com/");
+    http.get("http://githubapitestpac.herokuapp.com/");
 
 }, 900000);
 
