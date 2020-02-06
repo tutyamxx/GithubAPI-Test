@@ -249,7 +249,7 @@ export default
 
                 // --| If the last activity is a EventWatch, we want to get the watched repository URL
                 case "WatchEvent":
-                    ActivityEvent = ActivityEvent + " ➡️ " + ' (<a href="' + this.last_activity[0].org.url.replace("api.", "") + '" target="_blank">' + this.last_activity[0].repo.name + "</a>)";
+                    ActivityEvent = ActivityEvent + " ➡️ " + ' (<a href="' + this.last_activity[0].repo.url.replace("api.", "").replace("repos/", "") + '" target="_blank">' + this.last_activity[0].repo.name + "</a>)";
                     break;
 
                 // --| If the last activity is a PullRequestEvent, get the PR url to display it
