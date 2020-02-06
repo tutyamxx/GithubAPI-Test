@@ -29,10 +29,10 @@ All the URL's above pasted in the search box, will return my profile details.
 
 # Activity Examples
 
-![Fork Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/fork.PNG)
-![PR/Pull Request Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/pullrequest.PNG)
-![Commit/Push Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/push.PNG)
-![Watch Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/watch.PNG)
+![Fork Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/fork1.PNG)
+![PR/Pull Request Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/pullrequest1.PNG)
+![Commit/Push Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/push1.PNG)
+![Watch Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/watch1.PNG)
 
 
 
