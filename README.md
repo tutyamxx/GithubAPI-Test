@@ -1,4 +1,4 @@
-# MableTherapyTest
+# Github API Test
 
 * Simple one page application built in Vue.JS that interacts with Github API V3
 * Application is hosted on Heroku, hence the need for a simple express server to make things easier for me to host and deploy
