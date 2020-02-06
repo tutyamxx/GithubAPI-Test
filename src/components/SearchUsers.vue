@@ -81,6 +81,7 @@ export default
             this.loading_animation = true;
 
             // --| Blur after the query has been set
+            // --| This also closes the mobile keyboards upon hitting enter/go
             event.target.blur();
 
             // --| Forgot to trim the search query and let people search usernames with spaces in front and after...
@@ -88,7 +89,7 @@ export default
             // --| Example: https://github.com/tutyamxx/MableTherapyTest -> will return "tutyamxx"
             let FormatSearchQuery = this.search_query.trim();
 
-            // --| Check if URL starts with https or http ://github.
+            // --| Check if is actuallya Github URL related
             let RegexCheckHTTP = new RegExp(/^(?:https?:\/\/)?(?:www\.)?github\.[-a-zA-Z0-9./]+$/, "gi");
             FormatSearchQuery = (FormatSearchQuery.match(RegexCheckHTTP)) ? this.search_query = FormatSearchQuery = FormatSearchQuery.trim().replace(/(https?:\/\/|www\.)/gi, "").split("/")[1] : FormatSearchQuery.replace("%", "");
 
@@ -171,7 +172,7 @@ export default
                                 szResponseMessage = "Request limit reached, try again in 1 hour";
                                 break;
                             
-                            // --| 400 - Bad Request
+                            // --| 400 - Bad Request (not sure if this will ever bee called but hey)
                             case 400:
                                 szResponseMessage = "Bad request 😡";
                                 break;
@@ -237,10 +238,32 @@ export default
 
             // --| Get the activity type, remove Event part from the string and add spaces after each capital letter
             // --| Example of the process: PullRequest -> Pull Request
-            const ActivityEvent = this.last_activity[0].type.replace("Event", "").split(/(?=[A-Z])/).join(" ");
+            let ActivityEvent = this.last_activity[0].type.replace("Event", "").split(/(?=[A-Z])/).join(" ");
 
-            // --| If the last activity is a EventPush, we want to get the commit and url, otherwise just display the event
-            return (ActivityEvent === "Push" ? ActivityEvent + " ➡️ " + this.last_activity[0].repo.name + ' (<a href="https://github.com/' + this.last_activity[0].repo.name + "/commit/" + this.last_commit_sha + '" target="_blank">' + this.last_commit_sha.substr(0, 7) + "</a>)" : ActivityEvent + " ➡️ " + this.last_activity[0].repo.name);
+            switch(this.last_activity[0].type)
+            {
+                // --| If the last activity is a EventPush, we want to get the commit and url
+                case "PushEvent":
+                    ActivityEvent = ActivityEvent + " ➡️ " + this.last_activity[0].repo.name + ' (<a href="https://github.com/' + this.last_activity[0].repo.name + "/commit/" + this.last_commit_sha + '" target="_blank">' + this.last_commit_sha.substr(0, 7) + "</a>)";
+                    break;
+
+                // --| If the last activity is a EventWatch, we want to get the watched repository URL
+                case "WatchEvent":
+                    ActivityEvent = ActivityEvent + " ➡️ " + ' (<a href="' + this.last_activity[0].org.url.replace("api.", "") + '" target="_blank">' + this.last_activity[0].repo.name + "</a>)";
+                    break;
+
+                // --| If the last activity is a PullRequestEvent, get the PR url to display it
+                case "PullRequestEvent":
+                    ActivityEvent = ActivityEvent + " ➡️ " + this.last_activity[0].repo.name + ' (<a href="' + this.last_activity[0].payload.pull_request.html_url + '" target="_blank">#' + this.last_activity[0].payload.pull_request.number + " " + this.last_activity[0].payload.pull_request.title + "</a>)";
+                    break;
+
+                // --| If the events are none of the above, just display the event
+                default:
+                    ActivityEvent = ActivityEvent + " ➡️ " + this.last_activity[0].repo.name;
+                    break;
+            }
+
+            return ActivityEvent;
         }
     }
 };
