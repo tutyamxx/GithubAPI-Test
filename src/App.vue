@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Application Logo" src="./assets/logo.svg"><p id="test">Github API Test</p>
+    <img alt="Application Logo" src="./assets/logo.svg" width="30" height="30"><p id="test">Github API Test</p>
     
     <SearchUsers />
   </div>
