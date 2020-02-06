@@ -143,10 +143,10 @@ body
 #test
 {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    display: inline;
     color: whitesmoke;
     font-weight: bold;
     font-size: large;
+    text-align: center;
 }
 
 ::selection

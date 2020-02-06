@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Application Logo" src="https://mabletherapy.com/wp-content/themes/mabletherapy/assets/svgs/compressed/logo-mable.svg"><p id="test">(TEST)</p>
+    <p id="test">Github API Test</p>
     
     <SearchUsers />
   </div>
