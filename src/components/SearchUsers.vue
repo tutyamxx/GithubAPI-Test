@@ -257,6 +257,11 @@ export default
                     ActivityEvent = ActivityEvent + " ➡️ " + this.last_activity[0].repo.name + ' (<a href="' + this.last_activity[0].payload.pull_request.html_url + '" target="_blank">#' + this.last_activity[0].payload.pull_request.number + " " + this.last_activity[0].payload.pull_request.title + "</a>)";
                     break;
 
+                // --| If the last activity is a ForkEvent, get the repo name and url and display it
+                case "ForkEvent":
+                    ActivityEvent = ActivityEvent + " ➡️ " + this.last_activity[0].repo.name + ' (<a href="' + this.last_activity[0].repo.url.replace("api.", "").replace("repos/", "") + '" target="_blank">' + this.last_activity[0].repo.name + "</a>)";
+                    break;
+
                 // --| If the events are none of the above, just display the event
                 default:
                     ActivityEvent = ActivityEvent + " ➡️ " + this.last_activity[0].repo.name;
