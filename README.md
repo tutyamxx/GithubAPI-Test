@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="https://github.com/tutyamxx/GithubAPI-Test/blob/master/totallyignorethis/banner.PNG" widht="420" height="220"><br/>
+</p>
+
+
 # Github API Test - First attempt at a Vue.JS application (can be improved)
 
 * To test it live, go here ➡️ https://githubapitestpac.herokuapp.com/
@@ -28,11 +33,11 @@ All the URL's above pasted in the search box, will return my profile details.
 
 # Activity Examples
 
-![Fork Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/fork1.PNG)
-![PR/Pull Request Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/pullrequest1.PNG)
-![Commit/Push Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/push1.PNG)
-![Watch Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/watch1.PNG)
-![Null/Unknown Activity](https://github.com/tutyamxx/MableTherapyTest/blob/master/unknown1.PNG)
+![Fork Activity](https://github.com/tutyamxx/GithubAPI-Test/blob/master/totallyignorethis/fork1.PNG)
+![PR/Pull Request Activity](https://github.com/tutyamxx/GithubAPI-Test/blob/master/totallyignorethis/pullrequest1.PNG)
+![Commit/Push Activity](https://github.com/tutyamxx/GithubAPI-Test/blob/master/totallyignorethis/push1.PNG)
+![Watch Activity](https://github.com/tutyamxx/GithubAPI-Test/blob/master/totallyignorethis/watch1.PNG)
+![Null/Unknown Activity](https://github.com/tutyamxx/GithubAPI-Test/blob/master/totallyignorethis/unknown1.PNG)
 
 
 
