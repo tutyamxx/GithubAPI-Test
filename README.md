@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/tutyamxx/GithubAPI-Test/blob/master/totallyignorethis/banner.PNG" widht="420" height="220"><br/>
+  <img src="https://github.com/tutyamxx/GithubAPI-Test/blob/master/totallyignorethis/banner.PNG" widht="300" height="200"><br/>
 </p>
 
 
