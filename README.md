@@ -1,9 +1,8 @@
 # Github API Test - First attempt at a Vue.JS application (can be improved)
 
+* To test it live, go here ➡️ https://githubapitestpac.herokuapp.com/
 * Simple one page application built in Vue.JS that interacts with Github API V3
 * Application is hosted on Heroku, hence the need for a simple express server to make things easier for me to host and deploy
-* The production code is deployed on Heroku, so is using the **/dist** directory (Check the source code in here)
-* To test it live, go here ➡️ https://githubapitestpac.herokuapp.com/
 * Careful, free API without authentication (which is used here) is limited to **60** requests per hour!
 
 # Local Install
