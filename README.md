@@ -9,6 +9,7 @@
 * Simple one page application built in Vue.JS that interacts with Github API V3
 * Application is hosted on Heroku, hence the need for a simple express server to make things easier for me to host and deploy
 * Careful, free API without authentication (which is used here) is limited to **60** requests per hour!
+* If you get an error while accessing the URL's is most likely that I'm out of free monthly Heroku Dyno hours 🤐
 
 # Local Install
 
