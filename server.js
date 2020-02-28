@@ -11,11 +11,11 @@ app.use(serveStatic(__dirname + "/dist"));
 const port = process.env.PORT || 8080;
 app.listen(port);
 
-// --| Ping Heroku app and prevent it from sleeping every 15 minutes
-setInterval(() =>
-{
-    http.get("http://githubapitestpac.herokuapp.com/");
+// // --| Ping Heroku app and prevent it from sleeping every 15 minutes
+// setInterval(() =>
+// {
+//     http.get("http://githubapitestpac.herokuapp.com/");
 
-}, 900000);
+// }, 900000);
 
 module.exports.app = app;
